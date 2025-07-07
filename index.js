@@ -6,7 +6,7 @@ function createBot() {
   bot = mineflayer.createBot({
     host: 'snugsmp.play.hosting', // ✅ Your server IP
     port: 25565,            // ✅ Default port
-    username: 'SnugMc',// ✅ Replace with bot's username
+    username: 'SnugSmp',// ✅ Replace with bot's username
     version: false          // Auto-detect
   });
 
