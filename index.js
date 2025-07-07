@@ -23,7 +23,7 @@ function createBot() {
   // Auto-reconnect on kick/disconnect
   bot.on('end', () => {
     console.log('Bot disconnected. Reconnecting in 5 seconds...');
-    setTimeout(createBot, 5000);
+    setTimeout(createBot, 50000);
   });
 
   bot.on('kicked', (reason) => {
