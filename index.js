@@ -18,8 +18,8 @@ function createBot() {
     console.log('[SPAWN] Bot spawned into the world.');
 
     setTimeout(() => {
-      const registerCommand = '/register <snugmcbot0043>';
-      const loginCommand = '/login <snugmcbot0043>';
+      const registerCommand = '/register <cpmp0043>';
+      const loginCommand = '/login <cpmp0043>';
 
       console.log(`[AUTH] Sending: ${registerCommand}`);
       bot.chat(registerCommand);
