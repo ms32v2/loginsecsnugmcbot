@@ -4,71 +4,41 @@ let bot;
 
 function createBot() {
   bot = mineflayer.createBot({
-    host: 'snugsmp.play.hosting', // ✅ Your server IP
-    port: 25565,            // ✅ Default port
-    username: 'SnugLifesteal',// ✅ Replace with bot's username
-    version: false          // Auto-detect
+    host: 'snugsmp.play.hosting', // Replace with server IP
+    port: 25565,            // Default port
+    username: 'senpaispider',// Change this to bot username
+    version: false,         // Auto-detect server version
   });
 
-  bot.on('login', () => {
-    console.log(`[LOGIN] Connected as ${bot.username}`);
-  });
-
+  // Handle login/register commands
   bot.once('spawn', () => {
-    console.log('[SPAWN] Bot spawned into the world.');
-
     setTimeout(() => {
-      const registerCommand = '/register <cpmp0043>';
-      const loginCommand = '/login <cpmp0043>';
-
-      console.log(`[AUTH] Sending: ${registerCommand}`);
-      bot.chat(registerCommand);
-
-      console.log(`[AUTH] Sending: ${loginCommand}`);
-      bot.chat(loginCommand);
-    }, 3000);
+      if (bot.chat) {
+        bot.chat('/register <snugsenpai0043>'); // Only runs once
+        bot.chat('/login <snugsenpai0043>');
+      }
+    }, 3000); // Wait for server to load auth plugin
   });
 
-  // ✅ Log commands sent
-  const originalChat = bot.chat;
-  bot.chat = function (message) {
-    console.log(`[CHAT] Executing command: ${message}`);
-    return originalChat.call(bot, message);
-  };
-
-  // ✅ Listen for server messages (to detect successful login)
-  bot.on('message', (jsonMsg) => {
-    const msg = jsonMsg.toString();
-    console.log(`[SERVER] ${msg}`);
-
-    if (
-      msg.toLowerCase().includes("logged in") || 
-      msg.toLowerCase().includes("successfully") || 
-      msg.toLowerCase().includes("welcome")
-    ) {
-      console.log('[✔️ LOGIN SUCCESS] Bot is successfully logged in!');
-    }
-  });
-
-  bot.on('death', () => {
-    console.log('[DEATH] Bot died. Respawning...');
-    setTimeout(() => {
-      console.log('[RESPAWN] Sending respawn command...');
-      bot.respawn();
-    }, 1000);
-  });
-
+  // Auto-reconnect on kick/disconnect
   bot.on('end', () => {
-    console.log('[DISCONNECT] Bot disconnected. Reconnecting in 5 seconds...');
+    console.log('Bot disconnected. Reconnecting in 5 seconds...');
     setTimeout(createBot, 5000);
   });
 
   bot.on('kicked', (reason) => {
-    console.log('[KICKED] Bot was kicked:', reason);
+    console.log('Kicked:', reason);
   });
 
   bot.on('error', (err) => {
-    console.log('[ERROR] Error occurred:', err);
+    console.log('Error:', err);
+  });
+
+  // Auto respawn on death
+  bot.on('death', () => {
+    setTimeout(() => {
+      bot.respawn();
+    }, 1000);
   });
 }
 
